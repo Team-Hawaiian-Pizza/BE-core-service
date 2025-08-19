@@ -1,10 +1,5 @@
 from django.urls import path
-from .views import (
-    signup, set_location, create_card,
-    login, logout, guest_login,
-    me, update_me, update_manner,
-    profile_detail,
-)
+from .views import *
 
 urlpatterns = [
     # 회원가입 플로우
@@ -24,4 +19,5 @@ urlpatterns = [
 
     # 프로필 상세
     path("profiles/<int:user_id>", profile_detail),  # GET
+    path("all", list_users),    # GET
 ]

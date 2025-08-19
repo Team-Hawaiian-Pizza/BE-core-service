@@ -1,12 +1,11 @@
 from django.db import models
 
-class User(models.Model):  # Province/City FK 제거 → 문자열로 단순화
+class User(models.Model):
     username = models.CharField(max_length=40, unique=True)
     name = models.CharField(max_length=40)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=30, blank=True)
 
-    # ↓ 여기로 통합
     province_name = models.CharField(max_length=20, blank=True)
     city_name = models.CharField(max_length=40, blank=True)
 

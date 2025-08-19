@@ -2,11 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from .models import User
-from .serializers import (
-    SignupSerializer, SetLocationSerializer, CreateCardSerializer,
-    LoginSerializer, UpdateMeSerializer, MannerUpdateSerializer,
-    UserReadSerializer
-)
+from .serializers import *
 
 DEMO_USER_ID = 1  # 게스트용
 
@@ -115,3 +111,10 @@ def profile_detail(request, user_id):
         data["masked_phone"] = _mask(u.phone)
         data["connection_status"] = "NONE"
     return Response(data)
+
+# ---------- 전체 유저 ----------
+@api_view(["GET"])
+def list_users(request):
+    qs = User.objects.all().order_by("-id")  # 최신 가입 순
+    data = UserReadSerializer(qs, many=True).data
+    return Response({"count": len(data), "results": data})
