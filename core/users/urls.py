@@ -10,7 +10,6 @@ urlpatterns = [
     # 로그인/로그아웃
     path("login", login),                      # POST
     path("guest-login", guest_login),          # POST
-    path("logout", logout),                    # POST
 
     # 내 정보
     path("me", me),                            # GET

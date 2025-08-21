@@ -8,11 +8,19 @@ DEMO_USER_ID = 1  # 게스트용
 
 @api_view(["POST"])
 def guest_login(request):
-    request.session["user_id"] = DEMO_USER_ID
     return Response({"user_id": DEMO_USER_ID, "mode": "guest"})
 
 def current_user_id(request):
-    return request.session.get("user_id") or DEMO_USER_ID
+    # 1) 헤더 우선
+    xuid = request.headers.get("X-Demo-User-Id")
+    if xuid and str(xuid).isdigit():
+        return int(xuid)
+    # 2) 쿼리스트링/바디 보조
+    q = request.GET.get("user_id") or request.POST.get("user_id")
+    if q and str(q).isdigit():
+        return int(q)
+    # 3) 기본값(게스트)
+    return DEMO_USER_ID
 
 # ---------- 회원가입 ----------
 @api_view(["POST"])
@@ -50,19 +58,15 @@ def create_card(request):
 # ---------- 로그인/로그아웃 ----------
 @api_view(["POST"])
 def login(request):
+    # username 또는 email로 사용자 조회만 해주고 id를 내려줌(세션 저장 없음)
     s = LoginSerializer(data=request.data)
     s.is_valid(raise_exception=True)
     if s.validated_data.get("username"):
         u = get_object_or_404(User, username=s.validated_data["username"])
     else:
         u = get_object_or_404(User, email=s.validated_data["email"])
-    request.session["user_id"] = u.id
-    return Response({"user_id": u.id})
+    return Response({"user_id": u.id, "mode": "demo"})
 
-@api_view(["POST"])
-def logout(request):
-    request.session.flush()
-    return Response({"ok": True})
 
 # ---------- 내 정보 ----------
 @api_view(["GET"])

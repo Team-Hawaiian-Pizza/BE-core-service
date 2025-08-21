@@ -25,6 +25,14 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DEMO_USER_ID = 1
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [],           # 세션/기본 인증 끔
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",      # 전부 허용
+    ],
+}
+
+
 # Application definition
 
 INSTALLED_APPS = [
