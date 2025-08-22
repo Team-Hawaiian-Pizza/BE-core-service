@@ -9,7 +9,7 @@ DEMO_USER_ID = 1  # 게스트용
 
 def current_user_id(request):
     # 1) 헤더 우선
-    xuid = request.headers.get("X-Demo-User-Id")
+    xuid = request.headers.get("User-Id")
     if xuid and str(xuid).isdigit():
         return int(xuid)
     # 2) 쿼리스트링/바디 보조
