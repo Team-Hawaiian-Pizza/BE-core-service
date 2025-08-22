@@ -1,14 +1,25 @@
+# rewards/views.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.conf import settings
 from .models import Brand, StampBoard, Coupon
 
-def current_user_id(request):
-    return request.session.get("user_id") or getattr(settings, "DEMO_USER_ID", 1)
+DEMO_USER_ID = 1  # 게스트 기본 ID
 
-# --- (선택) 브랜드 목록: 스탬프/쿠폰 화면 상단용 ---
+def current_user_id(request):
+    # 1) 헤더(User-Id)
+    xuid = request.headers.get("User-Id")
+    if xuid and str(xuid).isdigit():
+        return int(xuid)
+    # 2) 쿼리스트링/바디
+    q = request.GET.get("user_id") or request.POST.get("user_id")
+    if q and str(q).isdigit():
+        return int(q)
+    # 3) 기본
+    return DEMO_USER_ID
+
+# --- 브랜드 목록 ---
 @api_view(["GET"])
 def list_brands(_request):
     data = [{"id": b.id, "name": b.name, "image": b.hero_image, "benefit": b.benefit_text}
@@ -31,7 +42,7 @@ def punch_stamp(request, brand_id):
     board.filled += 1
     board.save()
 
-    # 다 채우면 쿠폰 발급(자동)
+    # 다 채우면 쿠폰 발급
     if board.filled == board.total:
         brand = board.brand
         Coupon.objects.create(

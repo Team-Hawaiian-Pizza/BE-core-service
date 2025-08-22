@@ -1,19 +1,30 @@
+# network/views.py
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.conf import settings
 from users.models import User
 from .models import Friendship
 
+DEMO_USER_ID = 1  # 기본(게스트)
+
 def current_user_id(request):
-    return request.session.get("user_id") or getattr(settings, "DEMO_USER_ID", 1)
+    # 1) 헤더(User-Id) 우선
+    xuid = request.headers.get("User-Id")
+    if xuid and str(xuid).isdigit():
+        return int(xuid)
+    # 2) 쿼리스트링 보조 (?user_id=)
+    q = request.GET.get("user_id") or request.POST.get("user_id")
+    if q and str(q).isdigit():
+        return int(q)
+    # 3) 기본값
+    return DEMO_USER_ID
 
 @api_view(["GET"])
 def graph(request):
     """
-    GET /network/graph?depth=1|2
+    GET /network/graph?depth=1|2&user_id=<옵션>
     응답: { center, nodes:[{id,name,avatar_url?}], edges:[{source,target}] }
     """
-    me = int(request.GET.get("user_id") or current_user_id(request))
+    me = current_user_id(request)
     depth = int(request.GET.get("depth", 2))
 
     # 1차 친구
