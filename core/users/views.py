@@ -6,9 +6,6 @@ from .serializers import *
 
 DEMO_USER_ID = 1  # 게스트용
 
-@api_view(["POST"])
-def guest_login(request):
-    return Response({"user_id": DEMO_USER_ID, "mode": "guest"})
 
 def current_user_id(request):
     # 1) 헤더 우선
