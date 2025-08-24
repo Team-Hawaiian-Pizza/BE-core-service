@@ -1,4 +1,5 @@
 # network/views.py
+from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from users.models import User
@@ -18,11 +19,10 @@ def current_user_id(request):
     # 3) 기본값
     return DEMO_USER_ID
 
-@api_view(["GET"])
 def graph(request):
     """
     GET /network/graph?depth=1|2&user_id=<옵션>
-    응답: { center, nodes:[{id,name,avatar_url?}], edges:[{source,target}] }
+    응답: { center, nodes:[{id,name,avatar_url?,intro?}], edges:[{source,target}] }
     """
     me = current_user_id(request)
     depth = int(request.GET.get("depth", 2))
@@ -39,8 +39,11 @@ def graph(request):
             if b_id not in user_ids:  # me/1차 제외
                 user_ids.add(b_id)
                 edges.append({"source": a_id, "target": b_id})
-
-    users = User.objects.filter(id__in=user_ids).only("id", "name", "avatar_url")
-    nodes = [{"id": u.id, "name": u.name, "avatar_url": u.avatar_url} for u in users]
+    
+    # 1. DB에서 user 정보를 가져올 때 'intro' 필드를 추가로 요청합니다.
+    users = User.objects.filter(id__in=user_ids).only("id", "name", "avatar_url", "intro")
+    
+    # 2. 응답 데이터(nodes)를 만들 때 'intro' 필드를 추가합니다.
+    nodes = [{"id": u.id, "name": u.name, "avatar_url": u.avatar_url, "intro": u.intro} for u in users]
 
     return Response({"center": me, "nodes": nodes, "edges": edges})
