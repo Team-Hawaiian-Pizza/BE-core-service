@@ -19,6 +19,7 @@ def current_user_id(request):
     # 3) 기본값
     return DEMO_USER_ID
 
+@api_view(["GET"])
 def graph(request):
     """
     GET /network/graph?depth=1|2&user_id=<옵션>
