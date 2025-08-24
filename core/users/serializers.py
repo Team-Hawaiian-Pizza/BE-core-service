@@ -10,7 +10,7 @@ class UserReadSerializer(serializers.ModelSerializer):
             "id", "username", "name", "email", "phone",
             "province_name", "city_name",
             "avatar_url", "gender", "age_band", "intro",
-            "manner_temperature",
+            "manner_temperature", "tags",
         )
 
 # ====== Write (요청 바디 검증용) ======
@@ -57,6 +57,8 @@ class UpdateMeSerializer(serializers.Serializer):
     intro = serializers.CharField(required=False, allow_blank=True, max_length=500)
     province_name = serializers.CharField(required=False, allow_blank=True, max_length=20)
     city_name = serializers.CharField(required=False, allow_blank=True, max_length=40)
+    tags = serializers.JSONField(required=False)
 
 class MannerUpdateSerializer(serializers.Serializer):
     manner_temperature = serializers.IntegerField(min_value=0, max_value=100)
+

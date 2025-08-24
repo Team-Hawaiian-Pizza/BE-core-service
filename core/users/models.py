@@ -9,6 +9,8 @@ class User(models.Model):
     province_name = models.CharField(max_length=20, blank=True)
     city_name = models.CharField(max_length=40, blank=True)
 
+    # default=list는 새로운 사용자가 생성될 때 기본값으로 빈 리스트([])를 갖도록 합니다.
+    tags = models.JSONField(default=list, blank=True)
     avatar_url = models.URLField(blank=True)
     gender = models.CharField(max_length=10, blank=True)     # 'male'/'female'/'other'
     age_band = models.CharField(max_length=10, blank=True)   # '10s','20s',...
