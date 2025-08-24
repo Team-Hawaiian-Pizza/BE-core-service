@@ -23,6 +23,16 @@ ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_ALL_ORIGINS = True
 
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "origin",
+    "x-csrftoken",
+    "x-requested-with",
+    "user-id",
+]
+
 DEMO_USER_ID = 1
 
 REST_FRAMEWORK = {
