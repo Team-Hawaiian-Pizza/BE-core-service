@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from . import views_s3
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path("network/", include("network.urls")),
     path("connections/", include("connections.urls")),
-    path("rewards/", include("rewards.urls"))
+    path("rewards/", include("rewards.urls")),
+    path("api/s3/presign", views_s3.presign_put),  # PUT 업로드 presign
+    path("api/s3/get-url", views_s3.presign_get),  # (선택) 표시용 GET presign
 ]
