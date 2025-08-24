@@ -52,6 +52,30 @@ def punch_stamp(request, brand_id):
         )
     return Response({"filled": board.filled, "total": board.total})
 
+@api_view(["GET"])
+def list_all_stamps(request):
+    """
+    현재 사용자가 보유한 모든 스탬프판 목록을 반환합니다.
+    """
+    me = current_user_id(request)
+    
+    # 현재 사용자의 모든 스탬프보드를 가져옵니다.
+    # select_related('brand')를 사용해 브랜드 정보도 함께 조회하여 DB 효율을 높입니다.
+    stamp_boards = StampBoard.objects.filter(user_id=me).select_related("brand").order_by("id")
+    
+    # API 응답 형식에 맞게 데이터를 가공합니다.
+    data = []
+    for board in stamp_boards:
+        data.append({
+            "brand_id": board.brand.id,
+            "brand_name": board.brand.name,
+            "brand_image": board.brand.hero_image,
+            "total": board.total,
+            "filled": board.filled,
+        })
+        
+    return Response({"data": data})
+
 # --- 쿠폰 ---
 @api_view(["GET"])
 def list_coupons(request):
