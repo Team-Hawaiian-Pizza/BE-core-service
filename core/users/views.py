@@ -104,6 +104,7 @@ def profile_detail(request, user_id):
         "id": u.id, "name": u.name, "avatar_url": u.avatar_url,
         "gender": u.gender, "age_band": u.age_band, "intro": u.intro,
         "province_name": u.province_name, "city_name": u.city_name,
+        "tags": u.tags,
     }
     if viewer_id == u.id:
         data["email"] = u.email; data["phone"] = u.phone; data["connection_status"] = "CONNECTED"
