@@ -89,7 +89,7 @@ def inbound_requests(request):
 @api_view(["POST"])
 def accept(request, req_id):
     me_id = current_user_id(request)
-    r = get_object_or_404(ConnectionRequest, id=req_id, to_user_id=me_id)
+    r = get_object_or_404(ConnectionRequest, id=req_id)
     if r.status != ConnectionRequest.PENDING:
         return Response({"error": "already_processed"}, status=400)
 
