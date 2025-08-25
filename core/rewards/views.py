@@ -87,7 +87,7 @@ def list_coupons(request):
             "id": c.id,
             "title": c.title,
             "brand": c.brand.name,
-            "image": c.image,
+            "image": c.brand.hero_image,
             "expires_at": c.expires_at,
             "used": bool(c.used_at),
         })
