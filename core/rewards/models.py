@@ -2,7 +2,7 @@ from django.db import models
 
 class Brand(models.Model):
     name = models.CharField(max_length=80)
-    hero_image = models.URLField(blank=True)
+    hero_image = models.TextField(blank=True)
     benefit_text = models.CharField(max_length=120, blank=True)
 
 class StampBoard(models.Model):
