@@ -9,6 +9,8 @@
 
 > 멋사 대학 중앙 해커톤 · 개발기간: 2025년 8월 (약 2주)
 
+### ⛓️‍💥 서비스 url: https://gngn-one.vercel.app/
+
 ## 팀 역할 👥
 
 * **Backend**: 김서연(CORE), 이도형(AI), 김진(CHAT)
