@@ -49,7 +49,7 @@
 
 ##
 
-## 아키텍처 🛠️
+## 아키텍처 🛠️ (FEAT. 멀티모듈 아키텍처)
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/81018c67-f184-403e-92f3-6d4d0658e0fa" width="800" />
