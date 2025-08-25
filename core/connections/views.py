@@ -105,11 +105,13 @@ def accept(request, req_id):
 # 6) 거절
 @api_view(["POST"])
 def reject(request, req_id):
-    me_id = current_user_id(request)
     r = get_object_or_404(ConnectionRequest, id=req_id)
+
     if r.status != ConnectionRequest.PENDING:
-        return Response({"error": "already_processed"}, status=400)
+        return Response({"error": "이미 처리된 요청입니다."}, status=400)
+
     r.status = ConnectionRequest.REJECTED
     r.responded_at = timezone.now()
     r.save()
+
     return Response({"ok": True})
